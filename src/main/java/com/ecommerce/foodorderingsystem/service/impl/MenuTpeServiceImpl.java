@@ -1,7 +1,8 @@
-package com.ecommerce.foodorderingsystem.service;
+package com.ecommerce.foodorderingsystem.service.impl;
 
 import com.ecommerce.foodorderingsystem.model.MenuType;
 import com.ecommerce.foodorderingsystem.repository.MenuTypeRepository;
+import com.ecommerce.foodorderingsystem.service.MenuTypeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class MenuTpeServiceImpl implements MenuTypeService{
+public class MenuTpeServiceImpl implements MenuTypeService {
 
     private final MenuTypeRepository menuTypeRepository;
 

@@ -1,4 +1,4 @@
-package com.ecommerce.foodorderingsystem.service;
+package com.ecommerce.foodorderingsystem.service.impl;
 
 import com.ecommerce.foodorderingsystem.helper.OrderList;
 import com.ecommerce.foodorderingsystem.model.*;
@@ -7,6 +7,8 @@ import com.ecommerce.foodorderingsystem.repository.FoodItemRepository;
 import com.ecommerce.foodorderingsystem.repository.OrdersRepository;
 import com.ecommerce.foodorderingsystem.repository.RestaurantRepository;
 import com.ecommerce.foodorderingsystem.repository.UserRepository;
+import com.ecommerce.foodorderingsystem.service.OrderFoodItemService;
+import com.ecommerce.foodorderingsystem.service.OrderService;
 import com.stripe.exception.StripeException;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -17,7 +19,7 @@ import java.util.*;
 
 @Service
 @AllArgsConstructor
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
 
     private final OrdersRepository ordersRepository;
 
@@ -80,10 +82,11 @@ public class OrderServiceImpl implements OrderService{
         order.setRestaurant(restaurant.get());
         order.setTotalQuantity(totalQuantity);
         order.setTotalAmount(totalOrderAmount);
+        order.setUser(user.get());
 
         ordersRepository.save(order);
 
-        return paymentService.checkoutPayment(orderItemsQuantity,foodItems);
+        return paymentService.checkoutPayment(orderItemsQuantity,foodItems,user.get());
 
     }
 
@@ -96,5 +99,22 @@ public class OrderServiceImpl implements OrderService{
         }
 
         return restaurant.get().getOrders();
+    }
+
+    @Override
+    public double getTotalEarnedAmountF(LocalDate date) {
+
+        List<Orders> orderLists = ordersRepository.findByOrderDateAndOrderStatus(date,OrderStatus.DELIVERED);
+
+        double totalEarnedAmount = 0;
+
+        for(Orders order : orderLists){
+
+            totalEarnedAmount+=order.getTotalAmount();
+
+        }
+
+        return totalEarnedAmount;
+
     }
 }

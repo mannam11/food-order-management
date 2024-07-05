@@ -28,8 +28,8 @@ public class User implements Serializable {
 
     private boolean isLoggedIn;
 
-    @OneToMany(mappedBy = "user")
-    private Set<UserRoles> userRoles;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public String getFullName(){
         return firstName + " " + lastName;

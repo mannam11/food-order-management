@@ -1,7 +1,8 @@
-package com.ecommerce.foodorderingsystem.service;
+package com.ecommerce.foodorderingsystem.service.impl;
 
 import com.ecommerce.foodorderingsystem.model.City;
 import com.ecommerce.foodorderingsystem.repository.CityRepository;
+import com.ecommerce.foodorderingsystem.service.CityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class CityServiceImpl implements CityService{
+public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
 

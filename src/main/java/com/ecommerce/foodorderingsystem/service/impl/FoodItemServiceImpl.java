@@ -1,12 +1,12 @@
-package com.ecommerce.foodorderingsystem.service;
+package com.ecommerce.foodorderingsystem.service.impl;
 
 import com.ecommerce.foodorderingsystem.exception.exceptions.MenuTypeNotFoundException;
 import com.ecommerce.foodorderingsystem.model.FoodItem;
 import com.ecommerce.foodorderingsystem.model.MenuType;
 import com.ecommerce.foodorderingsystem.repository.FoodItemRepository;
 import com.ecommerce.foodorderingsystem.repository.MenuTypeRepository;
+import com.ecommerce.foodorderingsystem.service.FoodItemService;
 import lombok.AllArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

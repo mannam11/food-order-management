@@ -1,9 +1,13 @@
-package com.ecommerce.foodorderingsystem.service;
+package com.ecommerce.foodorderingsystem.service.impl;
 
+import com.ecommerce.foodorderingsystem.dto.SignupEmailDto;
 import com.ecommerce.foodorderingsystem.model.Role;
 import com.ecommerce.foodorderingsystem.model.User;
-import com.ecommerce.foodorderingsystem.repository.RoleRepository;
 import com.ecommerce.foodorderingsystem.repository.UserRepository;
+import com.ecommerce.foodorderingsystem.service.UserService;
+import com.ecommerce.foodorderingsystem.service.kafka.KafkaProducerClient;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
@@ -12,31 +16,32 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final UserRolesService userRolesService;
+    private final KafkaProducerClient kafkaProducerClient;
 
-    private final RoleRepository roleRepository;
+    private final ObjectMapper objectMapper;
 
     @Override
-    public void save(String firstName, String lastName, String email, String password, long roleId) throws BadRequestException {
+    public void save(String firstName, String lastName, String email, String password) throws BadRequestException, JsonProcessingException {
         User user = User.builder()
                 .firstName(firstName.toLowerCase())
                 .lastName(lastName.toLowerCase())
                 .email(email.toLowerCase())
                 .password(password)
+                .role(Role.USER)
                 .build();
-
-        Optional<Role> role = roleRepository.findById(roleId);
-        if(role.isEmpty()){
-            throw new BadRequestException("Role is not present");
-        }
 
         userRepository.save(user);
 
-        userRolesService.addUserRoles(user,role.get());
+        SignupEmailDto signupEmailDto = SignupEmailDto.builder()
+                .to(user.getEmail())
+                .fullName(user.getFullName())
+                .build();
+
+        kafkaProducerClient.send("signupEmail",objectMapper.writeValueAsString(signupEmailDto));
     }
 
     @Override
