@@ -5,6 +5,7 @@ import com.ecommerce.foodorderingsystem.dto.LogoutRequestDto;
 import com.ecommerce.foodorderingsystem.dto.SignupRequestDto;
 import com.ecommerce.foodorderingsystem.model.User;
 import com.ecommerce.foodorderingsystem.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> createUser(@RequestBody SignupRequestDto userRequestDto) throws BadRequestException {
-        userService.save(userRequestDto.getFirstName(), userRequestDto.getLastName(), userRequestDto.getEmail(), userRequestDto.getPassword(), userRequestDto.getRoleId());
+    public ResponseEntity<String> createUser(@RequestBody SignupRequestDto userRequestDto) throws BadRequestException, JsonProcessingException {
+        userService.save(userRequestDto.getFirstName(), userRequestDto.getLastName(), userRequestDto.getEmail(), userRequestDto.getPassword());
         return ResponseEntity.ok("User created");
     }
 

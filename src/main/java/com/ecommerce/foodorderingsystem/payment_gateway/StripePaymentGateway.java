@@ -1,6 +1,7 @@
 package com.ecommerce.foodorderingsystem.payment_gateway;
 
 import com.ecommerce.foodorderingsystem.model.FoodItem;
+import com.ecommerce.foodorderingsystem.model.User;
 import com.stripe.StripeClient;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
@@ -8,6 +9,8 @@ import com.stripe.param.checkout.SessionCreateParams;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +22,7 @@ public class StripePaymentGateway implements PaymentGateway {
     private StripeClient stripeClient;
 
     @Override
-    public String generateCheckoutPaymentLink(Map<Long,Integer> foodItemQuantity, List<FoodItem> orderedItems) throws StripeException {
+    public String generateCheckoutPaymentLink(Map<Long,Integer> foodItemQuantity, List<FoodItem> orderedItems, User orderedUser) throws StripeException {
 
         List<SessionCreateParams.LineItem> lineItemsList = new ArrayList<>();
 
@@ -49,8 +52,9 @@ public class StripePaymentGateway implements PaymentGateway {
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setSuccessUrl("https://www.linkedin.com/")
-                .setExpiresAt(System.currentTimeMillis()/1000L +(30*60))
+                .setExpiresAt(Instant.now().plus(Duration.ofMinutes(30)).toEpochMilli()/1000L)
                 .setCurrency("INR")
+                .setCustomerEmail(orderedUser.getEmail())
                 .build();
 
         Session session = stripeClient.checkout().sessions().create(sessionCreateParams);

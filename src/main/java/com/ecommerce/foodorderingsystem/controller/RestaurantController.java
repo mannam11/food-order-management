@@ -4,6 +4,7 @@ import com.ecommerce.foodorderingsystem.dto.RestaurantRequestDto;
 import com.ecommerce.foodorderingsystem.dto.RestaurantResponseDto;
 import com.ecommerce.foodorderingsystem.exception.exceptions.CityNotFoundException;
 import com.ecommerce.foodorderingsystem.model.Restaurant;
+import com.ecommerce.foodorderingsystem.service.OrderService;
 import com.ecommerce.foodorderingsystem.service.RestaurantService;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -19,6 +22,8 @@ import java.util.List;
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
+
+    private final OrderService orderService;
 
     @PostMapping
     public ResponseEntity<String> createRestaurant(@RequestBody RestaurantRequestDto restaurantDto) throws Exception {
@@ -61,6 +66,14 @@ public class RestaurantController {
                 .toList();
 
         return new ResponseEntity<>(restaurantResponseDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/amount")
+    public ResponseEntity<Double> getTotalAmountEarnedOnDate(@RequestParam String date) {
+
+        LocalDate expectedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        return new ResponseEntity<>(orderService.getTotalEarnedAmountF(expectedDate), HttpStatus.OK);
     }
 
 }

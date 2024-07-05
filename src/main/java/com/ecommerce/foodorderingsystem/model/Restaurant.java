@@ -28,6 +28,11 @@ public class Restaurant {
     @Enumerated(EnumType.STRING)
     private RestaurantStatus restaurantStatus;
 
-    @OneToMany(mappedBy = "restaurant")
+    @ManyToOne
+    private User owner;
+
+    private String businessEmail;
+
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Orders> orders;
 }

@@ -1,15 +1,16 @@
-package com.ecommerce.foodorderingsystem.service;
+package com.ecommerce.foodorderingsystem.service.impl;
 
 import com.ecommerce.foodorderingsystem.model.FoodItem;
 import com.ecommerce.foodorderingsystem.model.OrderFoodItem;
 import com.ecommerce.foodorderingsystem.model.Orders;
 import com.ecommerce.foodorderingsystem.repository.OrderFoodItemRepository;
+import com.ecommerce.foodorderingsystem.service.OrderFoodItemService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class OrderFoodItemServiceImpl implements OrderFoodItemService{
+public class OrderFoodItemServiceImpl implements OrderFoodItemService {
 
     private final OrderFoodItemRepository orderFoodItemRepository;
 

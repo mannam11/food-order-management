@@ -18,6 +18,4 @@ public class SignupRequestDto {
     private String email;
 
     private String password;
-
-    private long roleId;
 }

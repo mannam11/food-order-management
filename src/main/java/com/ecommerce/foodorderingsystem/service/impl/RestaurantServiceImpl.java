@@ -1,12 +1,12 @@
-package com.ecommerce.foodorderingsystem.service;
+package com.ecommerce.foodorderingsystem.service.impl;
 
-import com.ecommerce.foodorderingsystem.dto.RestaurantResponseDto;
 import com.ecommerce.foodorderingsystem.exception.exceptions.CityNotFoundException;
 import com.ecommerce.foodorderingsystem.model.City;
 import com.ecommerce.foodorderingsystem.model.Restaurant;
 import com.ecommerce.foodorderingsystem.model.RestaurantStatus;
 import com.ecommerce.foodorderingsystem.repository.CityRepository;
 import com.ecommerce.foodorderingsystem.repository.RestaurantRepository;
+import com.ecommerce.foodorderingsystem.service.RestaurantService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class RestaurantServiceImpl implements RestaurantService{
+public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
 
